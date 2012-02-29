@@ -18,7 +18,14 @@ namespace JsConsole
 
             while (command != "" && command != "exit")
             {
-                Console.WriteLine(context.Execute(command));
+                try
+                {
+                    Console.WriteLine(context.Execute(command));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Oops. Got an error: \n" + ex.Message);
+                }
                 Console.Write("js-console> ");
                 command = Console.ReadLine();
             }
