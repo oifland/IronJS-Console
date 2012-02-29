@@ -11,6 +11,21 @@ namespace JsConsole
         {
             var context = new IronJS.Hosting.CSharp.Context();
 
+            var writeLine = IronJS.Native.Utils.createHostFunction<Action<string>>(context.Environment,
+                x => {
+                    Console.WriteLine("Console: " + x);
+                });
+
+            context.SetGlobal("WriteLine", writeLine);
+
+            var setTitle = IronJS.Native.Utils.createHostFunction<Action<string>>(context.Environment,
+                x =>
+                {
+                    Console.Title = x;
+                });
+
+            context.SetGlobal("SetTitle", setTitle);
+
             Console.WriteLine("Type a JS expression below and press enter. (Blank line to quit.)");
 
             Console.Write("js-console> ");
@@ -26,7 +41,7 @@ namespace JsConsole
                 {
                     Console.WriteLine("Oops. Got an error: \n" + ex.Message);
                 }
-                Console.Write("js-console> ");
+                Console.Write("\njs-console> ");
                 command = Console.ReadLine();
             }
         }
